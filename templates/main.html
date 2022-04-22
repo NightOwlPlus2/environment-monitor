@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+ 
+<head>
+    <title>Dynamic Resize</title>
+    <meta http–equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Share+Tech+Mono'>
+    <style>
+    body {
+        text-align: center;
+        padding: 0px;
+        margin: 0px;
+    }
+    .clear:before,
+    .clear:after {
+        content: "";
+        display: table;
+    }
+    .clear:after {
+        clear: both;
+    }
+    .clear {
+        *zoom: 1;
+    }
+    .wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: 30px;
+        border: 1px solid #cccccc;
+    }
+    .gauge {
+        display: block;
+        float: left;
+    }
+    .clock-container{
+        width: 100%;
+        text-align: center;
+    }
+    #g1 {
+        width: 50%;
+    }
+    #g2 {
+        width: 50%;
+    }
+    #clock{
+        color:white;
+        font: 2em sans-serif; 
+        background: black; 
+        margin: 5px auto;
+        padding: 5px;
+        border: solid gray 2px; 
+        border-radius: 10px;
+        width:160px;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrapper clear">
+        <div class="clock-container" onload="startTime()">
+            <div id="clock"></div>
+        <div id="g1" class="gauge"></div>
+        <div id="g2" class="gauge"></div>
+    </div>
+    <script type="text/javascript">
+        function display_time() {
+            var now = new Date();
+            var hh = now.getHours();
+            var mm = now.getMinutes();
+            var ss = now.getSeconds();
+            hh = check(hh);
+            mm = check(mm);
+            ss = check(ss);
+            document.getElementById("clock").innerHTML = hh + ":" + mm + ":" + ss;
+        }
+
+        function check(a) {
+            if (a < 10) return "0" + a;
+            else return a;
+        }
+
+        window.onload = function () {
+            setInterval(display_time, 500);
+        }
+    </script>
+    <script src="{{ url_for('static', filename='raphael-2.1.4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='justgage.js') }}"></script>
+    <script>
+
+        
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var g1, g2, g3;
+ 
+        var g1 = new JustGage({
+            id: "g1",
+            value: {{temperature}},
+            min: 0,
+            max: 50,
+            title: "Temperature",
+        });
+ 
+        var g2 = new JustGage({
+            id: "g2",
+            value: {{humidity}},
+            min: 0,
+            max: 100,
+            title: "Humidity",
+        });
+    });
+    </script>
+</body>
+</html>
